@@ -19,6 +19,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
 	runtimeOnly("com.h2database:h2")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("io.cucumber:cucumber-java:7.15.0")
