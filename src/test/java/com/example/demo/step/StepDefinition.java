@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,8 +20,6 @@ public class StepDefinition extends SpringBootIntegrationTest {
 
     @LocalServerPort
     int port;
-
-    private final String BASE_URL = "http://localhost:8080/student";
 
     @Autowired
     TestRestTemplate testRestTemplate;
@@ -34,6 +33,10 @@ public class StepDefinition extends SpringBootIntegrationTest {
 
     int studentId;
 
+    private String getAPiUrl(){
+        return URI.create("http://localhost:"+port+"/student").getPath();
+    }
+
     @Given("I have proper connection to DB")
     public void checkDBConnection() {
         assertNotNull(studentRepo);
@@ -42,7 +45,7 @@ public class StepDefinition extends SpringBootIntegrationTest {
     @When("I make a post request with a student name {string} and age {int}")
     public void saveStudent(String studentName, Integer age) {
         student = new Student(studentName,age);
-        student = testRestTemplate.postForObject(BASE_URL, student, Student.class);
+        student = testRestTemplate.postForObject(getAPiUrl(), student, Student.class);
         assertNotNull(student);
     }
 
@@ -55,7 +58,7 @@ public class StepDefinition extends SpringBootIntegrationTest {
 
     @When("I make a get request to the students api")
     public void getAllStudents(){
-        studentList = testRestTemplate.getForObject(BASE_URL, List.class);
+        studentList = testRestTemplate.getForObject(getAPiUrl(), List.class);
     }
 
     @Then("I should get atleast one student back as response")
@@ -66,7 +69,7 @@ public class StepDefinition extends SpringBootIntegrationTest {
     @When("I make a put request to update a student with id {int} ,name {string} and age {int}")
     public void updateStudent(int id, String name, int age) {
         student = new Student(id, name, age);
-        testRestTemplate.put(BASE_URL,new Student(id, name, age));
+        testRestTemplate.put(getAPiUrl(),new Student(id, name, age));
     }
 
     @Then("I should be able to update the student successfully")
@@ -79,7 +82,7 @@ public class StepDefinition extends SpringBootIntegrationTest {
     @When("I make a delete request with a id {int}")
     public void deleteUser(int id) {
         studentId = id;
-        testRestTemplate.delete(BASE_URL+"/"+id);
+        testRestTemplate.delete(getAPiUrl()+"/"+id);
     }
 
     @Then("I should be able to delete the student")

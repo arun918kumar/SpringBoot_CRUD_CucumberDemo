@@ -22,12 +22,16 @@ dependencies {
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
 	runtimeOnly("com.h2database:h2")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
-	testImplementation("io.cucumber:cucumber-java:7.15.0")
-	testImplementation("io.cucumber:cucumber-junit:7.15.0")
-	testImplementation("io.cucumber:cucumber-spring:7.15.0")
+
+	testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.10.1")
+
+	testImplementation("io.cucumber:cucumber-java:7.12.0")
+	testImplementation("io.cucumber:cucumber-junit:7.12.0")
+	testImplementation("io.cucumber:cucumber-spring:7.12.0")
+
 
 }
 
 tasks.withType<Test> {
-	useJUnit()
+	useJUnitPlatform()
 }
